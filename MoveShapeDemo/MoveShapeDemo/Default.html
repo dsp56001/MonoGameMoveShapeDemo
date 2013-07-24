@@ -21,9 +21,9 @@
     $(function () {
         var moveShapeHub = $.connection.moveShapeHub,
             $shape = $("#shape"),
-            // Send a maximum of 10 messages per second 
+            // Send a maximum of 30 messages per second 
             // (mouse movements trigger a lot of messages)
-            messageFrequency = 10,
+            messageFrequency = 30,
             // Determine how often to send messages in
             // time to abide by the messageFrequency
             updateRate = 1000 / messageFrequency,

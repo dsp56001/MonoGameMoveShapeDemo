@@ -26,8 +26,6 @@ namespace MoveShapeDemoClient
 
         GameConsole console;
 
-        ShapeModel currentModel;
-
         Texture2D box;
         int rectWidth, rectHeight, difX, difY;
         Rectangle shape;
@@ -47,9 +45,6 @@ namespace MoveShapeDemoClient
         public override void Initialize()
         {
 
-            
-            //this.console.GameConsoleWrite("Hello!");
-            
             //Create Box 
             box = new Texture2D(this.GraphicsDevice, this.rectWidth, this.rectHeight);
             //Fill texture with red
@@ -57,17 +52,14 @@ namespace MoveShapeDemoClient
             for (int i = 0; i < Fdata.Length; ++i) Fdata[i] = Color.Red;
             box.SetData(Fdata);
 
-            currentModel = new ShapeModel();
-            currentModel.PropertyChanged += currentModel_PropertyChanged; 
-
             base.Initialize();
             
         }
 
         void currentModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            console.GameConsoleWrite(string.Format("PropertyChanged x:{0} y:(1)",  this.currentModel.Left, this.currentModel.Top));
-            this.currentModel.Updated = true; 
+            console.GameConsoleWrite(string.Format("PropertyChanged x:{0} y:(1)",  model.Left, model.Top));
+            model.Updated = true; 
             
         }
 
@@ -112,47 +104,26 @@ namespace MoveShapeDemoClient
         {
             base.Update(gameTime);
 
-            //mouse
-            if (prevMouse == null) this.prevMouse = Mouse.GetState();
-            
-
-            // TODO: Add your update logic here
-            if (
-                (currentModel.Left != SignalRGameInput.model.Left) ||
-                (currentModel.Top != SignalRGameInput.model.Top))
-            {
-                currentModel = SignalRGameInput.model;
-                //SignalRGameInput.Log.Clear();
-                //SignalRGameInput.Log.Append(currentModel.ToString());
-            }
-
-            //console.GameConsoleWrite(MoveShapeDemoClient.SignalRGameInput.Log.ToString());
-            //MoveShapeDemoClient.SignalRGameInput.Log.Clear();
-
-            
-
             this.UpdateMouse(gameTime);
 
-            if (currentModel.Updated)
+            if (model.Updated)
             {
-                currentModel.Updated = false;
-                //SignalRGameInput.model = currentModel;
-                //currentModel.PropertyChanged += currentModel_PropertyChanged;
-                //myHub.Invoke("MoveShapeHub", SignalRGameInput.model);
-                
-
+                model.Updated = false;
             }
+            
         }
 
         private void UpdateMouse(GameTime gameTime)
         {
+            //mouse
+            if (prevMouse == null) this.prevMouse = Mouse.GetState();
             this.currentMouse = Mouse.GetState();
             console.DebugText = currentMouse.X + " " + currentMouse.Y;
             //Mouse Down
             if (currentMouse.LeftButton == ButtonState.Pressed)
             {
                 //MouseDown in Shape
-                shape = new Rectangle((int)currentModel.Left, (int)currentModel.Top, rectWidth, rectHeight);
+                shape = new Rectangle((int)model.Left, (int)model.Top, rectWidth, rectHeight);
                 if (shape.Contains(new Point(currentMouse.X, currentMouse.Y)))
                 {
                     console.DebugText += "mouse \n" + box.Bounds + "\n" + shape;
@@ -162,10 +133,10 @@ namespace MoveShapeDemoClient
                         //mouse moved
                         difX = prevMouse.X - currentMouse.X;
                         difY = prevMouse.Y - currentMouse.Y;
-                        prevMouse = currentMouse;
-                        currentModel.Left-= difX;
-                        currentModel.Top -= difY; 
-                        myHub.Invoke("UpdateShape", currentModel);
+                        
+                        model.Left-= difX;
+                        model.Top -= difY;
+                        myHub.Invoke("UpdateModel", model);
                     }
                 }
                 else
@@ -173,21 +144,19 @@ namespace MoveShapeDemoClient
                     console.DebugText += "no mouse \n" + box.Bounds + "\n" + shape;
                 }
             }
+            prevMouse = currentMouse;
         }
 
-        
-
-        //Test Method for Logging connectin data
+        //Test Method for Logging connection data
         static void connection_Received(string obj)
         {
             //Log.Append(string.Format("{0}", obj.ToString()));
             //Console.WriteLine(string.Format("{0}", obj.ToString()));
         }
 
-
         internal void Draw(SpriteBatch _spriteBatch)
         {
-            _spriteBatch.Draw(box, new Vector2((float)currentModel.Left, (float)currentModel.Top), Color.White);
+            _spriteBatch.Draw(box, new Vector2((float)model.Left, (float)model.Top), Color.White);
         }
     }
 }
