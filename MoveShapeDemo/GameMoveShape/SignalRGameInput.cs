@@ -105,11 +105,18 @@ namespace MoveShapeDemoClient
             base.Update(gameTime);
 
             this.UpdateMouse(gameTime);
-
-            if (model.Updated)
+            if (model == null)
             {
-                model.Updated = false;
+                model = new ShapeModel();
             }
+            if (model != null)
+            {
+                if (model.Updated)
+                {
+                    model.Updated = false;
+                }
+            }
+            
             
         }
 

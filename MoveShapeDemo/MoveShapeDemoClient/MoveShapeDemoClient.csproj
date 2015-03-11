@@ -152,6 +152,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Content\Arial.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="MoveShapeDemoClient_TemporaryKey.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
