@@ -13,7 +13,7 @@ namespace MoveShapeDemo
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            RouteTable.Routes.MapHubs();
+            //RouteTable.Routes.MapHubs();
         }
 
         protected void Session_Start(object sender, EventArgs e)
