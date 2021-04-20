@@ -8,11 +8,11 @@ using Microsoft.Xna.Framework.Audio;
 //using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.AspNet.SignalR.Client.Hubs;
 using IntroGameLibrary.Util;
 using WebShapeConsoleClient;
+using Microsoft.AspNet.SignalR.Client;
 
 namespace MoveShapeDemoClient 
 {
